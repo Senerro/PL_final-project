@@ -1,20 +1,13 @@
 package com.perfomacelab.dbrowsgenerator.DAO;
 
-import com.perfomacelab.dbrowsgenerator.DAO.conection.ConnectionPool;
-import com.perfomacelab.dbrowsgenerator.DAO.conection.ConnectionSettings;
 import com.perfomacelab.dbrowsgenerator.DAO.interfaces.IUserDAO;
+import com.perfomacelab.dbrowsgenerator.DAO.helpers.QueryUtils;
 import com.perfomacelab.dbrowsgenerator.model.User;
+import lombok.extern.slf4j.Slf4j;
+import java.sql.*;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-public class UserDAO implements IUserDAO {
-    private final ConnectionSettings connectionSettings = new ConnectionSettings("src//main//resources//database.properties");
-    private final ConnectionPool connectionPool = ConnectionPool.getConnectionPool(5, connectionSettings);
-    private Connection connection;
-
+@Slf4j
+public class UserDAO extends AbstractDAO implements IUserDAO {
     @Override
     public int getCountOfUsers() {
         String query = "select count(*)  from public.boomq_user bu";
@@ -36,7 +29,22 @@ public class UserDAO implements IUserDAO {
 
     @Override
     public boolean insertUser(User user) {
-        return false;
+
+        String query =  QueryUtils.generateFullInsertQueryForBoomqUser(user);
+        connection = connectionPool.getConnection();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.executeUpdate();
+            connectionPool.returnConnection(connection);
+            ps.close();
+            return true;
+        } catch (SQLException e) {
+            log.error("Some error with table " + "\n"
+                    + "query is " + query + "\n"
+                    + "Exception is " + e);
+            return false;
+        }
     }
 
     @Override

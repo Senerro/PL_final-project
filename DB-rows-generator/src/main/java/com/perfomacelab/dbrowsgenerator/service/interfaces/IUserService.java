@@ -6,7 +6,6 @@ import com.perfomacelab.dbrowsgenerator.model.User;
 public interface IUserService {
     int getUsersCount();
     boolean insertUser(User user);
-
     boolean deleteTestUsers();
 
     User generateUser();

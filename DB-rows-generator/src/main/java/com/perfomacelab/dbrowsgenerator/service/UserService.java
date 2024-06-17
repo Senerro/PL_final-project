@@ -1,5 +1,6 @@
 package com.perfomacelab.dbrowsgenerator.service;
 
+import com.perfomacelab.dbrowsgenerator.DAO.helpers.Generator;
 import com.perfomacelab.dbrowsgenerator.DAO.interfaces.IUserDAO;
 import com.perfomacelab.dbrowsgenerator.model.User;
 import com.perfomacelab.dbrowsgenerator.service.interfaces.IUserService;
@@ -30,6 +31,15 @@ public class UserService implements IUserService {
 
     @Override
     public User generateUser() {
-        return null;
+        return  User.builder()
+                .id(Generator.userId())
+                .email(Generator.userEmail())
+                .password(Generator.userPass())
+                .language(Generator.userLanguage())
+                .isNotificationEnable(Generator.randomBool())
+                .date(Generator.date())
+                .isEnable(Generator.randomBool())
+                .nick(Generator.displayName())
+                .build();
     }
 }
