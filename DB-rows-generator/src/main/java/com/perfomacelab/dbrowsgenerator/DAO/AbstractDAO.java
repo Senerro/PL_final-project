@@ -7,6 +7,6 @@ import java.sql.Connection;
 
 public abstract class AbstractDAO {
     protected final ConnectionSettings connectionSettings = new ConnectionSettings("src//main//resources//database.properties");
-    protected final ConnectionPool connectionPool = ConnectionPool.getConnectionPool(5, connectionSettings);
+    protected final ConnectionPool connectionPool = ConnectionPool.getConnectionPool(15, connectionSettings);
     protected Connection connection;
 }

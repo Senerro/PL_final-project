@@ -27,10 +27,10 @@ public class ConnectionPool {
     private ConnectionPool(int size, ConnectionSettings setting) {
         this.maxSize = size;
         if (size <= 1)
-            this.maxSize = 5;
-        this.url = setting.url();
-        this.username = setting.username();
-        this.password = setting.password();
+            this.maxSize = 15;
+        this.url = setting.getUrl();
+        this.username = setting.getUsername();
+        this.password = setting.getPassword();
         connectionPool = this;
     }
 
@@ -39,11 +39,16 @@ public class ConnectionPool {
 
         connection = getPoolConnection();
 
-        if (connection == null && occupiedConnections.size() < this.maxSize)
+
+        if (connection == null && occupiedConnections.size() < this.maxSize) {
+            System.out.println("need to get connection from stack");
             connection = createPoolConnection();
+            System.out.println("connecttion created");
+        }
 
         if (connection == null) {
             try {
+                System.out.println("wait connection");
                 wait();
             } catch (InterruptedException e) {
                 log.error("thread " + Thread.currentThread() + " wasn't able to wait free connection");
@@ -77,6 +82,7 @@ public class ConnectionPool {
     private Connection getPoolConnection() {
         Connection connection = null;
         if (!freeConnections.isEmpty()) {
+            System.out.println("connecttion become free");
             connection = freeConnections.pop();
             occupiedConnections.add(connection);
         }
@@ -87,5 +93,7 @@ public class ConnectionPool {
         occupiedConnections.remove(connection);
         freeConnections.push(connection);
         notify();
+        if(occupiedConnections.isEmpty())
+            notifyAll();
     }
 }

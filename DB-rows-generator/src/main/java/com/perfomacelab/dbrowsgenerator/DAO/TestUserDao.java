@@ -17,9 +17,4 @@ public class TestUserDao extends AbstractDAO implements IUserDAO {
     public boolean insertUser(User user) {
         return true;
     }
-
-    @Override
-    public int deleteTestUsers() {
-        return 20000-1890;
-    }
 }

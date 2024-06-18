@@ -1,15 +1,18 @@
 package com.perfomacelab.dbrowsgenerator.DAO.conection;
 
+import lombok.Getter;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
-
+@Getter
 public class ConnectionSettings {
     private final String url;
-    private final String password;
     private final String username;
+    private final String password;
+
 
     public ConnectionSettings(String path) {
         var props = new Properties();
@@ -23,17 +26,4 @@ public class ConnectionSettings {
         this.username = props.getProperty("username");
         this.password = props.getProperty("password");
     }
-
-    public String password() {
-        return password;
-    }
-
-    public String url() {
-        return url;
-    }
-
-    public String username(){
-        return username;
-    }
-
 }

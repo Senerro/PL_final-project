@@ -10,7 +10,7 @@ import java.sql.*;
 public class UserDAO extends AbstractDAO implements IUserDAO {
     @Override
     public int getCountOfUsers() {
-        String query = "select count(*)  from public.boomq_user bu";
+        String query = "select count(*) from public.boomq_user bu";
         connection = connectionPool.getConnection();
         int rows = 0;
         try {
@@ -32,7 +32,6 @@ public class UserDAO extends AbstractDAO implements IUserDAO {
 
         String query =  QueryUtils.generateFullInsertQueryForBoomqUser(user);
         connection = connectionPool.getConnection();
-
         try {
             PreparedStatement ps = connection.prepareStatement(query);
             ps.executeUpdate();
@@ -45,10 +44,5 @@ public class UserDAO extends AbstractDAO implements IUserDAO {
                     + "Exception is " + e);
             return false;
         }
-    }
-
-    @Override
-    public int deleteTestUsers() {
-        return 0;
     }
 }
