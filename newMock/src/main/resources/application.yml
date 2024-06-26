@@ -2,7 +2,7 @@ spring:
   kafka:
     listener:
       ack-mode: record
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: 192.168.14.200:29092
     producer:
       key-serializer: org.apache.kafka.common.serialization.LongSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
